@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import Header from './components/Header';
 import Post from './components/Post';
-import { db } from './firebase';
+import { db, auth } from './firebase';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
+import { Button, Input } from '@material-ui/core';
 
 function getModalStyle() {
   const top = 50;
@@ -34,6 +35,9 @@ function App() {
 
   const [posts, setPosts] = useState([]);
   const [open, setOpen] = useState(false);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
 
   useEffect(() => {
     db.collection('posts').onSnapshot(snapshot => {
@@ -44,6 +48,11 @@ function App() {
     })
   }, []);
 
+  const signUp = (event) => {
+    event.preventDefault();
+
+    auth.createUserWithEmailAndPassword(email, password).catch((error) => alert(error.message));
+  }
   return (
     <div className="App">
       <Modal
@@ -51,13 +60,34 @@ function App() {
         onClose={() => setOpen(false)}
       >
         <div style={modalStyle} className={classes.paper}>
-          <h2>My Modal</h2>
-
-    </div>
+          <form className="app_signup">
+            <h2>My Modal</h2>
+            <Input
+              placeholder="username"
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <Input
+              placeholder="email"
+              type="text"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <Input
+              placeholder="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <Button onClick={signUp}>Sign Up</Button>
+          </form>
+        </div>
       </Modal>
 
       <Header />
 
+      <Button type="submit" onClick={() => setOpen(true)}>Sign Up</Button>
       <h1>hello world!</h1>
 
       {
