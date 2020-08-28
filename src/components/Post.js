@@ -1,9 +1,9 @@
 import React from  'react';
-import Image1 from '../images/pug1.jpg'
+import Image1 from '../images/pug1.jpg';
 import '../styles/Post.css';
 import Avatar from "@material-ui/core/Avatar";
 
-function Post() {
+function Post({ username, caption, imageUrl }) {
     return (
         <div className="post">
             <div className="post_header">
@@ -12,11 +12,11 @@ function Post() {
                     alt='Venturads'
                     src={Image1}
                 />
-                <h3 className="post_text">Username</h3>
+                <h3>{username}</h3>
             </div>
-                <img className="post_image" src={Image1} />
+                <img className="post_image" src={imageUrl} />
 
-                <h4 className="post_text"><strong>username</strong>Username</h4>
+                <h4 className="post_text"><strong>{username}</strong>{caption}</h4>
         </div>
     )
 }
