@@ -3,39 +3,66 @@ import './App.css';
 import Header from './components/Header';
 import Post from './components/Post';
 import { db } from './firebase';
+import { makeStyles } from '@material-ui/core/styles';
+import Modal from '@material-ui/core/Modal';
+
+function getModalStyle() {
+  const top = 50;
+  const left = 50;
+
+  return {
+    top: `${top}%`,
+    left: `${left}%`,
+    transform: `translate(-${top}%, -${left}%)`,
+  };
+}
+
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    position: 'absolute',
+    width: 400,
+    backgroundColor: theme.palette.background.paper,
+    border: '2px solid #000',
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+  },
+}));
 
 function App() {
-  const [posts, setPosts] = useState([
-    {
-      username: "venturads",
-      caption: "great day to code",
-      imageUrl: "https://miro.medium.com/max/11136/0*FI11QQF37uHOsnUZ"
-    },
-    {
-      username: "frank",
-      caption: "who loves css",
-      imageUrl: "https://www.inovex.de/blog/wp-content/uploads/2022/01/one-year-of-react-native.png"
-    },
-    {
-      username: "venturads",
-      caption: "great day to code",
-      imageUrl: "https://miro.medium.com/max/10944/1*ak9b5IT_n6mi9FE_KSoiHQ.jpeg"
-    }
-  ]);
+  const classes = useStyles();
+  const [modalStyle] = React.useState(getModalStyle);
+
+  const [posts, setPosts] = useState([]);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     db.collection('posts').onSnapshot(snapshot => {
-      setPosts(snapshot.docs.map(doc => doc.data()));
+      setPosts(snapshot.docs.map(doc => ({
+        id: doc.id,
+        post: doc.data()
+      })));
     })
   }, []);
 
   return (
     <div className="App">
-      <h1>hello world!</h1>
+      <Modal
+        open={open}
+        onClose={() => setOpen(false)}
+      >
+        <div style={modalStyle} className={classes.paper}>
+          <h2>My Modal</h2>
+
+    </div>
+      </Modal>
+
       <Header />
+
+      <h1>hello world!</h1>
+
       {
-        posts.map(post => (
-          <Post username={post.username} caption={post.caption} imageUrl={post.imageUrl}
+        posts.map(({id, post}) => (
+          <Post key={id} username={post.username} caption={post.caption} imageUrl={post.imageUrl}
           />
         ))
       }
