@@ -7,6 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import { Button, Input } from '@material-ui/core';
 import ImageUpload from './components/ImageUpload';
+import Logo1 from './images/venturads-instagram.jpg';
 
 function getModalStyle() {
   const top = 50;
@@ -154,17 +155,18 @@ function App() {
         </div>
       </Modal>
 
-      <Header />
+      <div className="app_header">
+        <img className="main_logo" src={Logo1} />
 
-      {user ? (
-      <Button onClick={() => auth.signOut()}>Logout</Button> ) :
-      (
-        <div className="app_loginContainer">
-          <Button onClick={() => setOpenSignIn(true)}>Sign In</Button>
-          <Button onClick={() => setOpen(true)}>Sign Up</Button>
-        </div>
-      )}
-
+          {user ? (
+          <Button onClick={() => auth.signOut()}>Logout</Button> ) :
+          (
+            <div className="app_loginContainer">
+              <Button onClick={() => setOpenSignIn(true)}>Sign In</Button>
+              <Button onClick={() => setOpen(true)}>Sign Up</Button>
+            </div>
+          )}
+      </div>
 
       <h1>hello world!</h1>
 
@@ -174,6 +176,13 @@ function App() {
           />
         ))
       }
+
+{user?.displayName ? (
+        <ImageUpload username={user.displayName} /> 
+      ): (
+        <h3>Sorry you need to login to upload</h3>
+      )}
+
     </div>
   );
 }
