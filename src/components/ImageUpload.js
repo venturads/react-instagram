@@ -45,15 +45,20 @@ function ImageUpload ({username}) {
                         caption: caption,
                         imageUrl: url,
                         username: username
-                    })
-                })
+                    });
+
+                    setProgess(0);
+                    setCaption('');
+                    setImage(null);
+                });
             }
-        )
+        );
     };
 
     return (
         <div>
-            <input type="" placeholder="Enter caption..." onChange={event => setCaption(event.target.value)} value={caption} />
+            <progress value={progress} max="100" />
+            <input type="" placeholder="Enter caption..." onChange={event => setCaption(event.target.value)} value={caption} required />
             <input type="file" onChange={handleChange} />
             <Button onClick={handleUpload}>
                 Upload
