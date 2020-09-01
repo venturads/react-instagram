@@ -34,7 +34,6 @@ const useStyles = makeStyles((theme) => ({
 function App() {
   const classes = useStyles();
   const [modalStyle] = React.useState(getModalStyle);
-
   const [posts, setPosts] = useState([]);
   const [open, setOpen] = useState(false);
   const [openSignIn, setOpenSignIn] = useState(false);
@@ -63,11 +62,13 @@ function App() {
 
   useEffect(() => {
     db.collection('posts').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
-      setPosts(snapshot.docs.map(doc => ({
-        id: doc.id,
-        post: doc.data()
-      })));
-    })
+      setPosts(
+        snapshot.docs.map(doc => ({
+          id: doc.id,
+          post: doc.data()
+      }))
+      );
+    });
   }, []);
 
   const signUp = (event) => {
@@ -93,13 +94,6 @@ function App() {
 
   return (
     <div className="App">
-
-      {user?.displayName ? (
-        <ImageUpload username={user.displayName} /> 
-      ): (
-        <h3>Sorry you need to login to upload</h3>
-      )}
-
       {/* <ImageUpload username={user.displayName} /> */}
       <Modal
         open={open}
@@ -171,17 +165,24 @@ function App() {
       <h1>hello world!</h1>
 
       {
-        posts.map(({id, post}) => (
-          <Post key={id} postId={post.postId} user={user} username={post.username} caption={post.caption} imageUrl={post.imageUrl}
+        posts.map(({id, post}) => {
+          return (
+          <Post
+            key={id}
+            postId={id}
+            user={user}
+            username={post.username}
+            caption={post.caption}
+            imageUrl={post.imageUrl}
           />
-        ))}
+        );
+      })}
 
       {user?.displayName ? (
-              <ImageUpload username={user.displayName} /> 
-            ): (
-              <h3>Sorry you need to login to upload</h3>
-            )}
-
+        <ImageUpload username={user.displayName} /> 
+        ) : (
+        <h3>Sorry you need to login to upload</h3>
+      )}
     </div>
   );
 }

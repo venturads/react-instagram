@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Input, Button } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import firebase from '../firebase';
 import { storage, db } from '../firebase';
 import '../styles/ImageUpload.css';
@@ -45,21 +45,29 @@ function ImageUpload ({username}) {
                         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
                         caption: caption,
                         imageUrl: url,
-                        username: username
+                        username: username,
                     });
-
-                    setProgess(0);
-                    setCaption('');
-                    setImage(null);
                 });
+            setProgess(0);
+            setCaption('');
+            setImage(null);
             }
         );
     };
 
     return (
         <div className="imageupload">
-            <progress className="imageupload_progress" value={progress} max="100" />
-            <input type="" placeholder="Enter caption..." onChange={event => setCaption(event.target.value)} value={caption} required />
+            <progress
+            className="imageupload_progress"
+            value={progress}
+            max="100" />
+            <input
+            type=""
+            placeholder="Enter caption..."
+            onChange={event => setCaption(event.target.value)}
+            value={caption}
+            required
+            />
             <input type="file" onChange={handleChange} />
             <Button onClick={handleUpload}>
                 Upload
