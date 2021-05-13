@@ -61,15 +61,24 @@ function App() {
   }, [user, username]);
 
   useEffect(() => {
-    db.collection('posts').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
+    db.collection('posts')
+    .orderBy('timestamp', 'desc')
+    .onSnapshot(snapshot => {
       setPosts(
-        snapshot.docs.map(doc => ({
+        snapshot.docs.map((doc) => ({
           id: doc.id,
-          post: doc.data()
+          post: doc.data(),
       }))
       );
     });
   }, []);
+
+
+  const clearInput = () => {
+    setUsername('');
+    setEmail('');
+    setPassword('');
+  }
 
   const signUp = (event) => {
     event.preventDefault();
@@ -90,6 +99,7 @@ function App() {
     .catch((error) => alert(error.message));
 
     setOpenSignIn(false);
+    clearInput();
   }
 
   return (

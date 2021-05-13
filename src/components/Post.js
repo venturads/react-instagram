@@ -6,7 +6,7 @@ import Avatar from "@material-ui/core/Avatar";
 import firebase from 'firebase';
 
 function Post(props) {
-    const { postId, user, username, caption, imageUrl } = props;
+    const { key, postId, user, username, caption, imageUrl } = props;
     const [comments, setComments] = useState([]);
     const [comment, setComment] = useState('');
 
@@ -17,12 +17,15 @@ function Post(props) {
                 .collection("posts")
                 .doc(postId)
                 .collection("comments")
-                .orderBy('creatAt', 'desc')
+                .orderBy('createdAt', 'desc')
                 .onSnapshot((snapshot) => {
-                    setComments(snapshot.docs.map((doc) => doc.data()));
+                    setComments(
+                        snapshot.docs.map((doc) => { 
+                            doc.data();
+                    })
+                );
             });
         }
-
         return () => {
             unsubscribe();
         };
@@ -44,7 +47,7 @@ function Post(props) {
             <div className="post_header">
                 <Avatar
                     className="post_avatar"
-                    alt='Venturads'
+                    alt={username}
                     src={Image1}
                 />
                 <h3>{username}</h3>
@@ -56,7 +59,10 @@ function Post(props) {
                 <div className="post_comments">
                     {comments.map((comment) => (
                         <p>
-                            <strong>{comment.username}</strong>{comment.text}
+                            <strong>test
+                                {comments.username}
+                            </strong>
+                                {comments.caption}
                         </p>
                     ))}
                 </div>
