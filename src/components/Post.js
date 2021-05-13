@@ -59,7 +59,7 @@ function Post(props) {
                 <div className="post_comments">
                     {comments.map((comment) => (
                         <p>
-                            <strong>test
+                            <strong>
                                 {comments.username}
                             </strong>
                                 {comments.caption}
